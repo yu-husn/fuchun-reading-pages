@@ -91,7 +91,7 @@ const stations = [
         "「奔」指奔跑的馬。浪濤像奔馬向前衝去，讓讀者感受到浪勢的速度和力量。"
       ],
       [
-        "作者為什麼先寫清澈見底的江水，再寫急流和猛浪？",
+        "作者為什麼先寫清澈見底的江水，又寫急流和猛浪？",
         [
           "交代船從上游移到下游的先後順序。",
           "說明河水越深，就越容易出現猛浪。",
@@ -112,11 +112,11 @@ const stations = [
         "關於對山的描寫，下列敘述何者正確？",
         [
           "山勢：高山集中在江的一岸，另一岸地勢低平。",
+          "山貌：「千百成峰」呈現沿途山峰的連綿不斷。",
           "樹木數量：寒樹只在少數山峰生長，分布稀疏。",
-          "樹木姿態：寒樹沿著山勢向兩側伸展，彷彿互相比寬。",
-          "山峰數量：「千百成峰」呈現沿途山峰的連綿不斷。"
+          "樹木姿態：寒樹沿著山勢向兩側伸展，彷彿互相競比。"
         ],
-        3,
+        1,
         "「千百成峰」用虛數寫出山峰眾多、連綿不斷。「夾岸」表示兩岸都有高山，「皆生」表示山上都長著寒樹，「負勢競上」寫樹木沿山勢競相向上生長。"
       ],
       [
@@ -330,14 +330,15 @@ const root = document.querySelector('main');
 const nav = document.querySelector('nav');
 const route = nav.closest('.route');
 const progress = document.querySelector('#progress');
-const key = 'fuchun-reading-v18';
+const key = 'fuchun-reading-v19';
 const swapLastStations = list => [list[0],list[1],list[2],list[3],list[5],list[4]];
 function pendingQuestions(checkpoint){
   return checkpoint?.pendingQuestionIds ?? (checkpoint?.pendingQuestionId ? [checkpoint.pendingQuestionId] : []);
 }
 let saved = {};
 try {
-  const updated = localStorage.getItem(key);
+  const currentSave = localStorage.getItem(key);
+  const updated = currentSave || localStorage.getItem('fuchun-reading-v18');
   const v17 = localStorage.getItem('fuchun-reading-v17');
   const v16 = localStorage.getItem('fuchun-reading-v16');
   const v15 = localStorage.getItem('fuchun-reading-v15');
@@ -423,6 +424,18 @@ try {
     saved.secondLegStarted ||= saved.submitted;
     saved.submitted = false;
     if (saved.current===stations.length) saved.current=(index+1)*3-1;
+  }
+  if (!currentSave) {
+    // Moving the mountain answer from D to B must preserve previously chosen text.
+    const mountainQuestion = '2-0';
+    const newOptionIndices = [0, 2, 3, 1];
+    const checkpoint = saved.checkpoints?.[0];
+    for (const selections of [saved.answers, checkpoint?.firstAnswers, checkpoint?.drafts]) {
+      const oldIndex = selections?.[mountainQuestion];
+      if (Number.isInteger(oldIndex) && oldIndex >= 0 && oldIndex < newOptionIndices.length) {
+        selections[mountainQuestion] = newOptionIndices[oldIndex];
+      }
+    }
   }
 } catch {}
 let current = saved.current ?? -1;
@@ -1082,29 +1095,27 @@ function render(){
     return `<button type="button" class="route-stop ${index<0?'':'route-bonus'}" data-station="${step}" ${current===step?'aria-current="step"':''}><span class="route-card"><span class="route-dot" aria-hidden="true">${badge}</span><img src="${photo}" alt="" width="832" height="466"><span class="route-label"><span>${name}</span><small></small></span></span></button>`;
   }).join('');
   if (current < 0){
-    root.innerHTML = `<section class="scroll-hero" aria-labelledby="lesson-title">
-      <img class="scroll-painting" src="opening-scroll.jpg" alt="清朗的富春江上，一葉小舟駛過青山與碧水">
-      <div class="scroll-content">
-        <div class="scroll-intro">
-          <p class="scroll-seal">富春江</p>
-          <h1 id="lesson-title" tabindex="-1">與宋元思書</h1>
-          <p class="scroll-deck"><strong>你的任務｜遊富春江，淨化身心</strong></p>
-          <p class="scroll-deck">此刻的你一心追求名利，又被政事和俗務纏身。搭上小舟，沿富春江欣賞奇山異水，讓山水之美幫你放下牽掛，淨化身心。</p>
-          <p class="scroll-deck">出發時，你有 100 點世俗牽掛。依序完成第 1～3 關、${bonusStops[0]}、第 4～6 關和${bonusStops[1]}，讓牽掛從 100 點降到 0，體會「望峰息心，窺谷忘返」。</p>
-          <button class="primary" data-go="0">登舟，從富陽啟航</button>
-        </div>
-        <blockquote class="scroll-passage">
+    root.innerHTML = `<section class="lesson-cover" aria-labelledby="lesson-title">
+      <div class="lesson-cover-content">
+        <p class="lesson-cover-author">吳均寫給宋元思的一封信</p>
+        <h1 id="lesson-title" tabindex="-1">與宋元思書</h1>
+        <p class="lesson-cover-mission">你一心求取功名，案上的公文卻怎麼也批不完。從富陽登舟，一路讀課文、看山水，每答對一題，俗事纏心值就降 ${questionPoints} 點。</p>
+        <dl class="lesson-cover-metrics">
+          <div><dt>俗事纏心值</dt><dd>100 <small>點起算</small></dd></div>
+          <div><dt>通過門檻</dt><dd>${purificationLimit} <small>點或更低</small></dd></div>
+        </dl>
+        <p class="lesson-cover-instructions"><strong>一節課內完成六關閱讀、兩個小遊戲，滿分 100 分。</strong><br>交卷後截圖上傳成績，也可以查看錯題詳解。</p>
+        <button class="primary lesson-cover-start" type="button" data-go="0">登舟，從富陽啟航 <span aria-hidden="true">→</span></button>
+      </div>
+      <figure class="lesson-cover-landscape">
+        <img src="opening-scroll.jpg" alt="清朗的富春江上，一葉小舟駛過青山與碧水">
+        <figcaption><blockquote>
           <span>風煙俱淨，天山共色。</span>
           <span>從流飄蕩，任意東西。</span>
           <span>自富陽至桐廬，一百許里。</span>
           <span>奇山異水，天下獨絕。</span>
-        </blockquote>
-      </div>
-      <div class="scroll-address" aria-label="書信的寄信人與收信人">
-        <span><img src="opening-wu.jpg" alt="">寄信人 <strong>吳均</strong></span>
-        <span class="scroll-arrow" aria-hidden="true">⟶</span>
-        <span><img src="opening-song.jpg" alt="">收信人 <strong>宋元思</strong></span>
-      </div>
+        </blockquote></figcaption>
+      </figure>
     </section>
     <section class="grading" aria-labelledby="grading-title">
       <h2 id="grading-title">配分說明</h2>

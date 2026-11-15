@@ -124,96 +124,117 @@
 .scene-translation { line-height: 1.8; }
 
 
-.scroll-hero {
-  position: relative;
-  isolation: isolate;
+.lesson-cover {
+  --cover-ink: #16362f;
+  --cover-paper: #f5edda;
+  --cover-gold: #f5cf8c;
   display: grid;
-  align-content: space-between;
-  gap: clamp(5rem,16vw,12rem);
-  min-height: clamp(490px, 49vw, 720px);
-  padding: clamp(1rem,4vw,3.2rem);
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   overflow: hidden;
-  border: 1px solid #87998a;
-  border-radius: .65rem;
-  background: #a9cec4;
+  border: 1px solid var(--cover-ink);
+  border-radius: .7rem;
+  background: var(--cover-ink);
+  color: var(--cover-paper);
 }
-.scroll-painting {
+.lesson-cover-content {
+  min-width: 0;
+  padding: clamp(1.3rem, 4vw, 3.5rem);
+}
+.lesson-cover-author {
+  margin: 0 0 .7rem;
+  color: var(--cover-gold);
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.lesson-cover h1 {
+  margin: 0;
+  scroll-margin-block-start: clamp(3.5rem, 9vw, 6rem);
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  line-height: 1.15;
+  letter-spacing: .035em;
+}
+.lesson-cover-mission {
+  max-width: 34em;
+  margin: 1rem 0;
+  line-height: 1.75;
+}
+.lesson-cover-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .65rem;
+  max-width: 28rem;
+  margin: 1.15rem 0;
+}
+.lesson-cover-metrics > div {
+  padding: .65rem clamp(.5rem, 1.6vw, 1rem);
+  border: 1px solid #779185;
+  border-radius: .4rem;
+}
+.lesson-cover-metrics > div:last-child {
+  background: var(--cover-gold);
+  border-color: var(--cover-gold);
+  color: #23372a;
+}
+.lesson-cover-metrics dt { font-size: .92rem; font-weight: 750; }
+.lesson-cover-metrics dd {
+  margin: .12rem 0 0;
+  font-size: clamp(1.7rem, 4vw, 2.9rem);
+  font-weight: 850;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.lesson-cover-metrics small { font-size: .78rem; white-space: nowrap; }
+.lesson-cover-instructions { margin: 0 0 1.15rem; font-size: .94rem; line-height: 1.7; }
+.lesson-cover .lesson-cover-start {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 52px;
+  padding: .5rem .9rem;
+  background: var(--cover-paper);
+  color: var(--cover-ink);
+  border-color: var(--cover-paper);
+}
+.lesson-cover :focus-visible { outline-color: var(--cover-gold); }
+.lesson-cover-landscape {
+  position: relative;
+  display: grid;
+  align-items: end;
+  min-height: 0;
+  isolation: isolate;
+  background: #315a50;
+}
+.lesson-cover-landscape img {
   position: absolute;
   z-index: -2;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: 68% center;
 }
-.scroll-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: .7rem;
+.lesson-cover-landscape::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  background: linear-gradient(to top, #0d2923 0%, #0d2923df 13%, #0d292370 29%, transparent 57%);
 }
-.scroll-intro, .scroll-passage, .scroll-address {
-  background: #f9f4e5f5;
-  border: 1px solid #c7b993;
-  box-shadow: 0 3px 18px #14352d22;
-}
-.scroll-intro {
-  align-self: start;
-  padding: clamp(.85rem,2.6vw,2.2rem);
-  border-radius: .45rem;
-}
-.scroll-seal {
-  display: inline-block;
-  background: #8f3b32;
-  color: #fff6e5;
-  padding: .25rem .45rem;
+.lesson-cover-landscape figcaption { padding: clamp(1rem, 3vw, 2.4rem); }
+.lesson-cover-landscape blockquote {
   margin: 0;
-  border-radius: .22rem;
-  font-weight: 750;
-  font-size: .78rem;
-  letter-spacing: .09em;
+  font: 700 clamp(1rem, 2vw, 1.35rem) / 1.62 "Noto Serif TC", "PMingLiU", serif;
+  text-shadow: 0 1px 6px #10261d;
 }
-.scroll-intro h1 { font-size: clamp(1.45rem,4.9vw,4.15rem); }
-.scroll-deck { margin: .2rem 0 .9rem; }
-.scroll-passage {
-  display: flex;
-  flex-direction: column;
-  writing-mode: vertical-rl;
-  gap: .3rem;
-  padding: .8rem .65rem;
-  margin: 0;
-  border-radius: .35rem;
-  font: 800 clamp(.9rem,1.4vw,1.2rem) / 1.55 "Noto Serif TC","PMingLiU",serif;
-  flex-shrink: 0;
-}
-.scroll-passage span { display: block; white-space: nowrap; }
-.scroll-address {
-  justify-self: start;
-  display: flex;
-  align-items: center;
-  gap: clamp(.35rem,2vw,1.1rem);
-  border-radius: 2rem;
-  padding: .35rem .75rem .35rem .4rem;
-  font-size: .87rem;
-}
-.scroll-address span { display: flex; align-items: center; gap: .35rem; }
-.scroll-address img {
-  width: 2.25rem;
-  height: 2.25rem;
-  flex: none;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center 37%;
-}
-.scroll-arrow { color: #466b5d; }
-@media (max-width: 560px) {
-  .scroll-hero { min-height: 480px; gap: 6rem; padding: .65rem; }
-  .scroll-painting { object-position: 64% center; }
-  .scroll-intro { padding: .65rem; }
-  .scroll-deck { font-size: .88rem; }
-  .scroll-intro button { padding: .45rem .55rem; font-size: .85rem; }
-  .scroll-passage { font-size: .78rem; padding: .5rem .3rem; gap: .15rem; }
-  .scroll-address { font-size: .75rem; }
+.lesson-cover-landscape span { display: block; }
+@media (max-width: 700px) {
+  .lesson-cover { grid-template-columns: 1fr; }
+  .lesson-cover h1 { font-size: clamp(2.2rem, 9vw, 3.5rem); }
+  .lesson-cover-landscape { min-height: clamp(220px, 64vw, 340px); }
+  .lesson-cover-landscape img { object-position: 68% 61%; }
+  .lesson-cover .lesson-cover-start { width: 100%; }
 }
 
 .route {
