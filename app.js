@@ -109,7 +109,7 @@ const stations = [
     "夾岸高山，皆生寒樹，負勢競上，互相軒邈；爭高直指，千百成峰。",
     [
       [
-        "關於對山的描寫，下列敘述何者正確？",
+        "關於文中寒樹的描寫，下列敘述何者正確？",
         [
           "山勢：高山集中在江的一岸，另一岸地勢低平。",
           "山貌：「千百成峰」展現沿途山峰的連綿不斷。",
@@ -117,8 +117,7 @@ const stations = [
           "樹木姿態：寒樹沿山勢競相向上生長，彷彿互相競比。"
         ],
         3,
-        "「負勢競上，互相軒邈；爭高直指」寫寒樹沿山勢競相向上生長，彷彿在比誰長得更高、更遠，所以選 D。B 說明的是「千百成峰」，這四個字在本題指定的範圍之外。",
-        "請根據「負勢競上，互相軒邈；爭高直指」作答。"
+        "「負勢競上，互相軒邈；爭高直指」寫寒樹沿山勢競相向上生長，彷彿在比誰長得更高、更遠，所以選 D。B 說明的是「千百成峰」所呈現的山貌，題目問的是寒樹。"
       ],
       [
         "「負勢競上，互相軒邈，爭高直指」把樹木寫成什麼樣子？用了什麼修辭？",
@@ -982,7 +981,18 @@ function alignRiverToCards(){
 
 function renderQuestions(station, questions){
   const disabled = q => answerLocked(station,q) ? 'disabled' : '';
-  const radio = ([prompt,options,,,context],q)=>`<fieldset id="question-${q}" tabindex="-1"><legend>${q+1}．${prompt}</legend>${context ? `<p class="question-passage">${context}</p>` : ''}${options.map((option,i)=>`<label><input type="radio" name="q-${q}" data-answer="${q}" value="${i}" ${answers[idFor(station,q)]===i?'checked':''} ${disabled(q)}>${station===0||context?`<span><strong>${answerLetter(i)}.</strong> ${option}</span>`:option}</label>`).join('')}</fieldset>`;
+  const radio = ([prompt,options,,,context],q)=>{
+    const id = idFor(station,q);
+    const showLetters = station===0 || context || id==='2-0';
+    return `<fieldset id="question-${q}" tabindex="-1">
+      <legend>${q+1}．${prompt}</legend>
+      ${context ? `<p class="question-passage">${context}</p>` : ''}
+      ${options.map((option,i)=>`<label>
+        <input type="radio" name="q-${q}" data-answer="${q}" value="${i}" ${answers[id]===i?'checked':''} ${disabled(q)}>
+        ${showLetters ? `<span><strong>${answerLetter(i)}.</strong> ${option}</span>` : option}
+      </label>`).join('')}
+    </fieldset>`;
+  };
   const illustrated = ([prompt, options],q) => `<fieldset id="question-${q}" tabindex="-1" class="picture-question">
     <legend>${q+1}．${prompt}</legend>
     <div class="picture-options">
