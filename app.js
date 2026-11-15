@@ -112,12 +112,12 @@ const stations = [
         "關於對山的描寫，下列敘述何者正確？",
         [
           "山勢：高山集中在江的一岸，另一岸地勢低平。",
-          "山貌：「千百成峰」呈現沿途山峰的連綿不斷。",
+          "山貌：「千百成峰」精確記錄了沿途山峰的數量。",
           "樹木數量：寒樹只在少數山峰生長，分布稀疏。",
-          "樹木姿態：寒樹沿著山勢向兩側伸展，彷彿互相競比。"
+          "樹木姿態：描寫寒樹沿山勢競相向上生長，彷彿互相競比。"
         ],
-        1,
-        "「千百成峰」用虛數寫出山峰眾多、連綿不斷。「夾岸」表示兩岸都有高山，「皆生」表示山上都長著寒樹，「負勢競上」寫樹木沿山勢競相向上生長。"
+        3,
+        "「負勢競上，互相軒邈；爭高直指」寫寒樹沿山勢競相向上生長，彷彿在比誰長得更高、更遠。「夾岸」表示兩岸都有高山，「皆生」表示山上都長著寒樹。「千百」是虛數，用來形容山峰眾多。"
       ],
       [
         "「負勢競上，互相軒邈，爭高直指」把樹木寫成什麼樣子？用了什麼修辭？",
@@ -330,7 +330,7 @@ const root = document.querySelector('main');
 const nav = document.querySelector('nav');
 const route = nav.closest('.route');
 const progress = document.querySelector('#progress');
-const key = 'fuchun-reading-v19';
+const key = 'fuchun-reading-v20';
 const swapLastStations = list => [list[0],list[1],list[2],list[3],list[5],list[4]];
 function pendingQuestions(checkpoint){
   return checkpoint?.pendingQuestionIds ?? (checkpoint?.pendingQuestionId ? [checkpoint.pendingQuestionId] : []);
@@ -338,7 +338,7 @@ function pendingQuestions(checkpoint){
 let saved = {};
 try {
   const currentSave = localStorage.getItem(key);
-  const updated = currentSave || localStorage.getItem('fuchun-reading-v18');
+  const updated = currentSave || localStorage.getItem('fuchun-reading-v19') || localStorage.getItem('fuchun-reading-v18');
   const v17 = localStorage.getItem('fuchun-reading-v17');
   const v16 = localStorage.getItem('fuchun-reading-v16');
   const v15 = localStorage.getItem('fuchun-reading-v15');
@@ -404,9 +404,10 @@ try {
     saved.submitted = false;
     if (saved.current===stations.length) saved.current=2;
   }
-  const replacedQuestions = v17 ? [['5-1',1]] : [['2-0',0],['5-1',1]];
+  const replacedQuestions = [['2-0',0]];
+  if (!updated) replacedQuestions.push(['5-1',1]);
   for (const [id,index] of replacedQuestions){
-    if (updated || !Object.hasOwn(saved.answers ?? {},id)) continue;
+    if (currentSave || !Object.hasOwn(saved.answers ?? {},id)) continue;
     delete saved.answers[id];
     const checkpoint = saved.checkpoints?.[index];
     if (checkpoint) {
@@ -424,18 +425,6 @@ try {
     saved.secondLegStarted ||= saved.submitted;
     saved.submitted = false;
     if (saved.current===stations.length) saved.current=(index+1)*3-1;
-  }
-  if (!currentSave) {
-    // Moving the mountain answer from D to B must preserve previously chosen text.
-    const mountainQuestion = '2-0';
-    const newOptionIndices = [0, 2, 3, 1];
-    const checkpoint = saved.checkpoints?.[0];
-    for (const selections of [saved.answers, checkpoint?.firstAnswers, checkpoint?.drafts]) {
-      const oldIndex = selections?.[mountainQuestion];
-      if (Number.isInteger(oldIndex) && oldIndex >= 0 && oldIndex < newOptionIndices.length) {
-        selections[mountainQuestion] = newOptionIndices[oldIndex];
-      }
-    }
   }
 } catch {}
 let current = saved.current ?? -1;
