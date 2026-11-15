@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102922"><meta name="description" content="從富陽到桐廬，沿富春江完成〈與宋元思書〉六站閱讀評量。"><title>與宋元思書｜富春江六站</title><link rel="stylesheet" href="style.css"><script src="app.js" type="module"></script></head>
+<body class="is-opening">
+<section id="opening-prologue" class="prologue opening-prologue is-waiting" aria-labelledby="prologue-title">
+  <h2 class="prologue-title" id="prologue-title" tabindex="-1">俗事纏心</h2>
+  <div class="prologue-scene">
+    <img class="prologue-art" src="opening-official.webp" width="1440" height="810" fetchpriority="high" alt="一位古人皺著眉頭，一手扶額，書案堆滿待處理的公文。">
+    <span class="prologue-candle" aria-hidden="true"></span>
+    <div class="prologue-cloud">
+      <span style="--thought-delay: 1s">何時才能博得功名？</span>
+      <span style="--thought-delay: 2.6s">若能再升一級，俸祿也能多些。</span>
+      <span style="--thought-delay: 4.2s">若能光耀門楣，這些年就值了。</span>
+      <span style="--thought-delay: 5.8s">昨夜的公文還沒批完，又送來一疊。</span>
+      <span style="--thought-delay: 7.4s">伏案直到夜深，腰背都痠了。</span>
+      <span style="--thought-delay: 9s">想出門透透氣，偏又抽不開身。</span>
+    </div>
+  </div>
+  <button type="button" class="primary prologue-start" id="start-opening" hidden>開始觀賞</button>
+  <div class="prologue-invitation">
+    <p>讓我們用富春江的美好風景，幫助他洗滌身心靈吧！</p>
+    <a class="primary prologue-link" href="#lesson-title">查看遊江任務</a>
+    <button type="button" class="primary" id="continue-opening" hidden>繼續遊江</button>
+  </div>
+</section>
+<header class="mast"><div class="brand">富春江 <span>閱讀評量</span></div><div class="mast-controls"><p id="progress" aria-live="polite"></p><button id="replay-opening" type="button">重新觀賞起始動畫</button><button id="music-toggle" type="button" aria-pressed="true">關閉配樂</button></div></header><audio id="background-music" src="sounds/mountain-spring-kaazoom.mp3" preload="none" loop></audio><section id="journey" class="journey" aria-label="俗事纏心值"></section><section class="route" aria-labelledby="route-title">
+  <h2 class="route-title" id="route-title">富春江航線</h2>
+  <div class="route-map">
+    <svg class="route-river" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="route-water" x1="0" y1="0" x2="1" y2=".65" gradientUnits="objectBoundingBox">
+          <stop stop-color="#25584a"/>
+          <stop offset=".25" stop-color="#54816e"/>
+          <stop offset=".46" stop-color="#396c59"/>
+          <stop offset=".7" stop-color="#5d8673"/>
+          <stop offset="1" stop-color="#285647"/>
+        </linearGradient>
+        <filter id="river-ink" x="-15%" y="-25%" width="130%" height="150%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency=".035 .065" numOctaves="3" seed="9" result="paper-grain"/>
+          <feDisplacementMap in="SourceGraphic" in2="paper-grain" scale="13" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <path id="river-course"/>
+      </defs>
+      <g filter="url(#river-ink)">
+        <use href="#river-course" class="river-bank"/>
+        <use href="#river-course" class="river-water"/>
+      </g>
+      <use href="#river-course" class="river-shallows"/>
+      <use href="#river-course" class="river-glint"/>
+    </svg>
+    <nav aria-label="富春江六站"></nav>
+  </div>
+</section><main></main>
+<footer class="music-credits" aria-label="配樂來源">
+  <small>全程配樂 <a href="https://pixabay.com/music/world-mountain-spring-full-version-chinese-music-410476/">Mountain Spring (full version) Chinese Music</a> · kaazoom · <a href="https://pixabay.com/service/license-summary/">Pixabay 內容授權</a></small>
+</footer>
+<dialog id="opening-dialog" class="prologue opening-dialog" aria-labelledby="opening-dialog-title"></dialog>
+<p id="completion" class="sr-only" aria-live="polite"></p></body></html>
